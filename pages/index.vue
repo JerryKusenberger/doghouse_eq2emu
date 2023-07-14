@@ -25,7 +25,7 @@ let apiStatus = ref('')
 
 async function testApiConnection() {
   try {
-    const response = await useApi('https://localhost:44335/test', { method: 'GET' })
+    const response = await useApi('https://eq2dev-api.null.services/test', { method: 'GET' })
     apiStatus.value = 'API is up and running!'
   }
   catch {
