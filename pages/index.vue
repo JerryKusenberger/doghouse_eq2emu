@@ -18,7 +18,7 @@
             Accounts
           </div>
           <div class="font-bold">
-            90.2k
+            {{ serverStats.accounts }}
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
             Items
           </div>
           <div class="font-bold">
-            126.2k
+            {{ serverStats.items }}
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
             Characters
           </div>
           <div class="font-bold">
-            130k
+            {{ serverStats.characters }}
           </div>
         </div>
       </div>
@@ -48,19 +48,18 @@
             Guilds
           </div>
           <div class="font-bold">
-            1.1k
+            {{ serverStats.guilds }}
           </div>
         </div>
       </div>
     </div>
 
     <!-- online players -->
-
     <div class="container m-auto grid grid-cols-12 mt-8">
       <div class="col-span-6 border border-gray-100 rounded shadow-lg flex items-center bg-white">
         <div class="w-full">
           <div class="flex justify-end w-full font-bold p-5">
-            Players Online ({{ serverStats.length }})
+            Players Online ({{ onlinePlayers.length }})
           </div>
 
           <div class="grid grid-cols-5 bg-slate-100 border-t border-b h-10 flex items-center pl-3">
@@ -82,31 +81,27 @@
           </div>
 
           <div class="pl-3">
-            <div v-for="character in serverStats" :key="character.Id" class="grid grid-cols-5">
+            <div v-for="player in onlinePlayers" :key="player.Id" class="grid grid-cols-5">
               <div class="col-span-1 font-semibold p-2">
-                {{ character.name }}
+                {{ player.name }}
               </div>
               <div class="col-span-1 font-semibold p-2">
-                {{ character.level }}
+                {{ player.level }}
               </div>
               <div class="col-span-1 font-semibold p-2">
-                {{ character.currentZone }}
+                {{ player.currentZone }}
               </div>
               <div class="col-span-1 font-semibold p-2">
-                {{ character.lastClientVersion }}
+                {{ player.lastClientVersion }}
               </div>
               <div class="col-span-1 font-semibold p-2">
-                {{ character.ipAddress }}
+                {{ player.ipAddress }}
               </div>
             </div>
           </div>
-
-
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -114,33 +109,32 @@
 <script setup>
 const { $api } = useNuxtApp()
 
-let apiStatus = ref('')
 let characters = ref([])
 let isLoading = ref(false)
-let serverStats = ref([])
+let serverStats = ref({})
+let onlinePlayers = ref([])
 
 onMounted(() => {
   getCharacters()
   getOnlinePlayers()
+  getServerStats()
 })
-
-async function testApiConnection() {
-  try {
-    const response = await useApi('https://eq2dev-api.null.services/test', { method: 'GET' })
-    apiStatus.value = 'API is up and running!'
-  }
-  catch {
-    apiStatus.value = 'API is down!'
-  }
-}
 
 async function getOnlinePlayers() {
   try {
-    const response = await useApi('https://eq2dev-api.null.services/serverStats', { method: 'GET' })
+    const response = await useApi('https://eq2dev-api.null.services/serverStats/onlinePlayers', { method: 'GET' })
+    onlinePlayers.value = response
+  }
+  catch {
+  }
+}
+
+async function getServerStats() {
+  try {
+    const response = await useApi('https://eq2dev-api.null.services/serverStats/stats', { method: 'GET' })
     serverStats.value = response
   }
   catch {
-
   }
 }
 
