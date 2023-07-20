@@ -109,13 +109,11 @@
 <script setup>
 const { $api } = useNuxtApp()
 
-let characters = ref([])
 let isLoading = ref(false)
 let serverStats = ref({})
 let onlinePlayers = ref([])
 
 onMounted(() => {
-  getCharacters()
   getOnlinePlayers()
   getServerStats()
 })
@@ -137,20 +135,5 @@ async function getServerStats() {
   catch {
   }
 }
-
-async function getCharacters() {
-  try {
-    isLoading.value = true
-    characters.value = []
-    const response = await $api.characterApi.getCharacters()
-    characters.value = response
-  }
-  catch {
-  }
-  finally {
-    isLoading.value = false
-  }
-}
-
 </script>
   
