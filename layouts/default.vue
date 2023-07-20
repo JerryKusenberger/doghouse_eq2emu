@@ -6,6 +6,9 @@
         <NuxtLink to="/" class="hover:underline pr-5 text-gray-400 active:text-white">
           Dashboard
         </NuxtLink>
+        <NuxtLink to="/characters" class="hover:underline pr-5 text-gray-400 active:text-white">
+          Characters
+        </NuxtLink>
         <NuxtLink to="/debug" class="hover:underline text-gray-400 active:text-white">
           Debug
         </NuxtLink>
